@@ -88,10 +88,10 @@ dsh plugin --profile desktop remove dsh-ark-image   # 卸载
 
 | 填什么 | 例子 | 需要构建授权吗 |
 |---|---|---|
-| **GitHub 地址**（推荐） | `github:XN-H/dsh-ark-image` | ❌ 不需要 |
-| **npm 包名** | `dsh-ark-image` | ❌ 不需要 |
+| **GitHub 地址** | `github:XN-H/dsh-ark-image` | ❌ 不需要 |
+| **npm 包名**（推荐） | `dsh-ark-image` | ❌ 不需要 |
 | **本地目录路径** | `D:\你的路径\dsh-ark-image` | ❌ 不需要 |
-| **tarball 文件** | `D:\你的路径\dsh-ark-image-0.1.5.tgz` | ❌ 不需要 |
+| **tarball 文件** | `D:\你的路径\dsh-ark-image-<版本>.tgz` | ❌ 不需要 |
 
 > **为什么本项目从 GitHub 装不需要授权？**
 >
