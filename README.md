@@ -1,6 +1,17 @@
 # dsh-ark-image
 
-Volcano Ark (Doubao Seedream) image generation tool for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness).
+**DeepSeek Harness 生图插件** —— 文生图 / 图片生成 / AI 绘画，基于**火山方舟 Seedream（豆包）**。零依赖，纯 JavaScript，无需构建。
+
+**DSH image generation plugin for DeepSeek Harness** — text-to-image powered by **Volcano Ark Seedream (Doubao)**. Zero dependencies, plain JavaScript, no build step.
+
+关键词 / Keywords：`dsh` `dsh-plugin` `deepseek-harness` `生图` `文生图` `图片生成` `AI 绘画` `火山方舟` `豆包` `Seedream` `Doubao` `Volcano Ark` `image-generation` `text-to-image`
+
+Adds one tool — `ark_generate_image` — that turns a text prompt into an image, saves it
+into the session workspace, and shows it inline in the conversation.
+
+> **English summary** — A dependency-free DSH bundle that registers an image-generation
+> tool backed by Volcano Ark. Requires your own Ark API key. Install with
+> `dsh plugin --profile <name> add dsh-ark-image`. Full documentation is in Chinese below.
 
 > ## ⚠️ 非官方项目 / Unofficial project
 >
@@ -14,14 +25,6 @@ Volcano Ark (Doubao Seedream) image generation tool for [DeepSeek Harness](https
 > It is not affiliated with, endorsed by, or sponsored by DeepSeek or Volcano Engine.
 > Those names are used only to describe compatibility and the API this plugin calls.
 > Distributed under the MIT licence, with no warranty.
-
-Adds one tool — `ark_generate_image` — that turns a text prompt into an image, saves it
-into the session workspace, and shows it inline in the conversation.
-
-> **English summary** — A dependency-free DSH bundle that registers an image-generation
-> tool backed by Volcano Ark. Requires your own Ark API key. Install with
-> `dsh plugin --profile <name> add <package-or-tarball>`. Full documentation is in
-> Chinese below.
 
 ---
 
