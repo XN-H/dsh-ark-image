@@ -1,0 +1,8 @@
+- insert:
+    - id: ark-image
+      name: dsh-ark-image
+      config:
+        baseUrl: https://ark.cn-beijing.volces.com/api/v3
+        model: doubao-seedream-5-0-pro-260628
+        outputDir: generated-images
+        timeoutMs: 180000

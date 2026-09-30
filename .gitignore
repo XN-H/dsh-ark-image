@@ -1,0 +1,19 @@
+# Dependencies (the plugin itself has none; this guards against local experiments)
+node_modules/
+
+# Build output, if a build step is ever added
+lib/
+dist/
+
+# Packed artifacts
+*.tgz
+
+# Generated images, in case the plugin is configured with a relative outputDir
+generated-images/
+
+# Editor and OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log

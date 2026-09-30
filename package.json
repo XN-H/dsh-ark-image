@@ -1,0 +1,49 @@
+{
+  "name": "dsh-ark-image",
+  "version": "0.1.3",
+  "description": "Volcano Ark (Doubao Seedream) image generation tool for DeepSeek Harness",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "image-generation",
+    "text-to-image",
+    "volcano-ark",
+    "seedream",
+    "doubao"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XN-H/dsh-ark-image.git"
+  },
+  "homepage": "https://github.com/XN-H/dsh-ark-image#readme",
+  "bugs": {
+    "url": "https://github.com/XN-H/dsh-ark-image/issues"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "meta": {
+    "title": "Ark 图片生成",
+    "description": "通过火山方舟（Doubao Seedream）生成图片，自动转存到工作区。"
+  },
+  "icon": "./icon.svg"
+}
+
