@@ -60,7 +60,7 @@ D:\你的项目\generated-images\2026-09-30\a-vast-open-sea-085550.jpg
 
 1. 打开 Harness，点左侧边栏的 **「插件」**
 2. 点右上角的 **「+ 添加插件」**
-3. 在输入框里填 **`github:XN-H/dsh-ark-image`**
+3. 在输入框里填 **`dsh-ark-image`**
 4. 点 **「安装」**，等它跑完（约 5 秒）
 5. **完全退出 Harness，再重新打开**
 
@@ -69,9 +69,21 @@ D:\你的项目\generated-images\2026-09-30\a-vast-open-sea-085550.jpg
 
 **装好的标志**：重启后，插件列表里能看到 `dsh-ark-image`，且能用自然语言让它画图。
 
+> ⚠️ **为什么填包名而不是 GitHub 地址？**
+>
+> 图形界面在安装前会先**查一次包信息**（用于显示预览、校验兼容性），而这一步
+> **只支持 npm 上的包**。填 `github:` 地址会在这一步失败并报
+> 「无法获取插件信息」——**这不是包的问题，是界面的限制**。
+>
+> 命令行没有这个预检查，所以命令行可以用 GitHub 地址。见下一个入口。
+
 ### 入口二：命令行
 
 ```sh
+# 从 npm 安装（推荐）
+dsh plugin --profile <你的profile> add dsh-ark-image
+
+# 或从 GitHub 源码安装（不需要构建授权，见下）
 dsh plugin --profile <你的profile> add github:XN-H/dsh-ark-image
 ```
 
@@ -84,14 +96,17 @@ dsh plugin --profile desktop remove dsh-ark-image   # 卸载
 
 ### 关于输入框里填什么
 
-那个输入框接受三种来源，**本项目三种都支持**：
+那个输入框接受四种来源：
 
-| 填什么 | 例子 | 需要构建授权吗 |
-|---|---|---|
-| **GitHub 地址** | `github:XN-H/dsh-ark-image` | ❌ 不需要 |
-| **npm 包名**（推荐） | `dsh-ark-image` | ❌ 不需要 |
-| **本地目录路径** | `D:\你的路径\dsh-ark-image` | ❌ 不需要 |
-| **tarball 文件** | `D:\你的路径\dsh-ark-image-<版本>.tgz` | ❌ 不需要 |
+| 填什么 | 例子 | 界面能用吗 | 需要构建授权吗 |
+|---|---|---|---|
+| **npm 包名**（推荐） | `dsh-ark-image` | ✅ 能 | ❌ 不需要 |
+| GitHub 地址 | `github:XN-H/dsh-ark-image` | ❌ **界面查询会失败** | ❌ 不需要 |
+| 本地目录路径 | `D:\你的路径\dsh-ark-image` | ⚠️ 未验证 | ❌ 不需要 |
+| tarball 文件 | `D:\你的路径\dsh-ark-image-<版本>.tgz` | ⚠️ 未验证 | ❌ 不需要 |
+
+**结论：在图形界面里，请填 npm 包名 `dsh-ark-image`。**
+其余三种在界面里可能失败——用命令行则四种都可以。
 
 > **为什么本项目从 GitHub 装不需要授权？**
 >
