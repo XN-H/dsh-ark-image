@@ -6,12 +6,31 @@
 
 关键词 / Keywords：`dsh` `dsh-plugin` `deepseek-harness` `生图` `文生图` `图片生成` `AI 绘画` `火山方舟` `豆包` `Seedream` `Doubao` `Volcano Ark` `image-generation` `text-to-image`
 
-Adds one tool — `ark_generate_image` — that turns a text prompt into an image, saves it
-into the session workspace, and shows it inline in the conversation.
+---
 
-> **English summary** — A dependency-free DSH bundle that registers an image-generation
-> tool backed by Volcano Ark. Requires your own Ark API key. Install with
-> `dsh plugin --profile <name> add dsh-ark-image`. Full documentation is in Chinese below.
+## 先说清楚：这个插件是给谁用的
+
+> **这不是 [`dsh-image-gen`](https://github.com/shanliuling/dsh-image-gen) 的替代品。**
+
+| 你想要的 | 该用哪个 |
+|---|---|
+| 图生图、图片编辑、AI 画布 | **[`dsh-image-gen`](https://github.com/shanliuling/dsh-image-gen)** —— 功能完整，8 个 Provider，有图库 |
+| 切换阿里云 / Gemini / OpenAI / Grok 等多个生图服务 | 同上 |
+| 本地 ComfyUI | 同上 |
+| **只想"说句话就出图"，然后忘掉这个插件的存在** | **这个** |
+
+**这个插件的取舍是刻意做窄的**：
+
+- ✅ **零运行时依赖** —— 没有依赖，就不会因为依赖出问题
+- ✅ **没有构建步骤** —— 不会出现"装完加载失败"（pnpm 默认拒绝执行插件的构建脚本，有 `prepare` 的包首次安装会失败，需要用户手动放行；本插件没有脚本可跑，所以不会）
+- ✅ **全部代码可通读** —— 一个文件，你可以自己看懂每一行
+- ❌ **只有 1 个 Provider**（火山方舟）
+- ❌ **只能文生图**，不能改图
+- ❌ **没有图库 / 画布 / 批量对比**
+
+**如果你的需求在上表"该用哪个"那一列命中前者，请直接用 `dsh-image-gen`——它做得比我好，这不是客套。**
+
+---
 
 > ## ⚠️ 非官方项目 / Unofficial project
 >
@@ -39,6 +58,17 @@ into the session workspace, and shows it inline in the conversation.
 ```
 D:\你的项目\generated-images\2026-09-30\a-vast-open-sea-085550.jpg
 ```
+
+> **English summary** — Adds one tool, `ark_generate_image`, that turns a text prompt into
+> an image, downloads it immediately into the session workspace (Ark URLs expire), and
+> shows it inline in the conversation. A dependency-free DSH bundle backed by Volcano Ark;
+> you supply your own API key. Install with `dsh plugin --profile <name> add dsh-ark-image`.
+> The rest of this document is in Chinese.
+>
+> **Scope** — Deliberately narrow: one provider, text-to-image only, zero dependencies,
+> no build step. It is *not* a replacement for
+> [`dsh-image-gen`](https://github.com/shanliuling/dsh-image-gen); if you need image
+> editing, a gallery, or multiple providers, use that instead.
 
 ---
 

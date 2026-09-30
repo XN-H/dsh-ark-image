@@ -1,6 +1,6 @@
 {
   "name": "dsh-ark-image",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "DeepSeek Harness 生图插件：文生图 / 图片生成，基于火山方舟 Seedream（豆包）。零依赖，纯 JavaScript，无需构建。 | DSH image generation plugin for DeepSeek Harness: text-to-image via Volcano Ark Seedream (Doubao). Zero dependencies, plain JavaScript, no build step.",
   "keywords": [
     "dsh",
