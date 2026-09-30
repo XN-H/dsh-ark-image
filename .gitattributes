@@ -1,0 +1,19 @@
+# Normalize line endings.
+#
+# Without this, Git on Windows rewrites every text file to CRLF on checkout and
+# prints a warning for each one. A plugin is downloaded by users on any platform,
+# so the repository should store LF and let each checkout decide.
+* text=auto eol=lf
+
+# Files that must keep LF even when a Windows editor touches them.
+*.js    text eol=lf
+*.json  text eol=lf
+*.yml   text eol=lf
+*.md    text eol=lf
+
+# Binary or generated files Git should never try to normalize.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.tgz   binary
