@@ -1,6 +1,6 @@
 {
   "name": "dsh-ark-image",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Volcano Ark (Doubao Seedream) image generation tool for DeepSeek Harness",
   "keywords": [
     "dsh",

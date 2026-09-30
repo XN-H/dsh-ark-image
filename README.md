@@ -43,29 +43,83 @@ D:\你的项目\generated-images\2026-09-30\a-vast-open-sea-085550.jpg
 
 ### 前置条件
 
-1. **DeepSeek Harness**（CLI 或桌面版均可）
+你需要两样东西：
+
+1. **DeepSeek Harness**（见下方「先装 Harness」）
 2. **火山方舟 API Key** —— 免费注册，见下方「获取 API Key」
 
-### 方式一：从 tarball 安装（推荐，不需要任何构建授权）
+---
+
+## 先装 Harness
+
+> 已经有 Harness 了？跳到「安装插件」。
+
+### 方式一：桌面版（推荐，不用碰命令行）
+
+1. 打开 **[deepseek.com/harness](https://www.deepseek.com/harness/)**
+2. 下载对应系统的安装包：
+   - **Windows**：`x64-Setup.exe`
+   - **macOS**：`universal.dmg`（Intel 和 Apple 芯片通用）
+   - Linux 暂无安装包
+3. 运行安装程序，装完打开
+4. **首次启动会走一个设置向导**，可以按提示走，也可以直接跳过
+5. 在 **设置 → 模型** 里配置对话用的模型（登录 DeepSeek 账号，或填 API Key）
+
+桌面版自带 Node.js、pnpm 和 Python 运行时，**不需要你预装任何环境**。
+
+### 方式二：命令行版
+
+需要先装 [Node.js](https://nodejs.org/)（`^22.19.0` 或 `>= 24`），然后在终端里：
 
 ```sh
-dsh plugin --profile <你的profile> add ./dsh-ark-image-0.1.2.tgz
+# 一次性启动（不用安装）
+npx @deepseek-ai/dsh web
+
+# 或装成全局命令后使用
+npm install -g @deepseek-ai/dsh
+dsh web
 ```
 
-### 方式二：从 npm 安装
+启动后浏览器打开 `http://127.0.0.1:3080`。
+
+> **两者可以共存**，会话记录共用（都在 `~/.dsh`），但**插件要分别安装**。
+
+---
+
+## 安装插件
+
+### 桌面版（推荐）
+
+1. 打开 Harness 左侧的 **「插件」** 页面
+2. 点右上角 **「+ 添加插件」**
+3. 输入框里填 **`github:XN-H/dsh-ark-image`**
+4. 点 **「安装」**
+5. **完全退出 Harness 再重新打开**（桌面版要右键托盘图标 → 退出，点窗口 X 只是最小化）
+
+### 命令行版
 
 ```sh
-dsh plugin --profile <你的profile> add dsh-ark-image
+dsh plugin --profile <你的profile> add github:XN-H/dsh-ark-image
 ```
 
-### 方式三：从本地目录安装（开发时用）
+> 常见的 profile 名字是 `web`（命令行版）或 `desktop`（桌面版）。
+
+### 其他安装方式
 
 ```sh
-dsh plugin --profile <你的profile> add /path/to/dsh-ark-image
+# 从 npm 安装（如果已发布）
+dsh plugin --profile web add dsh-ark-image
+
+# 从 tarball 安装（离线分发用）
+dsh plugin --profile web add ./dsh-ark-image-0.1.3.tgz
+
+# 从本地目录安装（开发时用，改了代码立刻生效）
+dsh plugin --profile web add /path/to/dsh-ark-image
 ```
 
-> **桌面版用户**：打开「插件」→「添加插件」，在输入框里填包名或本地路径，点安装。
-> 安装后**需要重启 Harness**，插件才会生效。
+> **为什么推荐 GitHub 方式**：本项目是纯 JavaScript、零依赖、无构建步骤，
+> 所以从 GitHub 安装**不需要任何构建授权**，也不会出现「装完加载失败」的问题。
+> （官方文档提醒：有 `prepare`/`build` 步骤的包从 git 安装会缺少编译产物。）
 
 ---
 
@@ -183,34 +237,60 @@ export ARK_API_KEY="你的Key"      # 加到 ~/.bashrc 或 ~/.zshrc 里可持久
 
 ---
 
-## 常见问题
+## 出问题了？按这张表自查
 
-**装完没反应 / 看不到工具？**
+**先按顺序走这三步**，大部分问题到这就解决了：
 
-插件变更后**必须重启 Harness**。桌面版要**完全退出**（右键托盘 → 退出），
-点窗口 X 只是最小化。
+1. **重启 Harness**（桌面版要右键托盘 → 退出，点窗口 X 只是最小化）
+2. **确认 Key 读到了**：在 Harness 里问 AI「帮我看一下 ARK_API_KEY 环境变量有没有设置」
+3. **确认模型开通了**：去 [火山方舟控制台](https://console.volcengine.com/ark) → 开通管理 → 看 `Doubao-Seedream` 是否已开通
 
-**报「Ark API key is missing」？**
+### 症状对照表
 
-Key 没读到。注意：`setx` 设置的环境变量**只在 Harness 下次启动时生效**，
-当前运行的进程读不到。
+| 你看到的 | 原因 | 怎么修 |
+|---|---|---|
+| 插件列表里没有 `dsh-ark-image` | 没装成功，或没重启 | 重新在「插件」页安装，然后**完全退出** Harness |
+| 装的时候报网络错误 / 一直转圈 | 连不上 GitHub | 换网络，或改用 tarball / 本地目录安装 |
+| 报「已存在」/ 加载冲突 | `node_modules` 里有残留 | 先卸载，重启，再装 |
+| AI 说它没有画图工具 | 插件没激活 | 完全退出 Harness 再打开（**不是**点 X） |
+| 报 `Ark API key is missing` | Key 没读到 | 见下一节「Key 相关」 |
+| 报 `401` / `403` | Key 不对 | 见下一节「Key 相关」 |
+| 报 `404` | 模型没开通 | 控制台「开通管理」里开通，或换模型 |
+| 报 `429` | 请求太频繁 | 等一会儿再试 |
+| 图存到奇怪的地方 | `outputDir` 配置 | 见「配置项」，默认存会话工作区 |
+| 生成很慢（30 秒以上） | **正常** | 实测 98% 是 API 生成时间。想快就用 `1K` |
 
-**报 404 / 模型不存在？**
+### Key 相关
 
-该模型没在火山方舟开通。去控制台「开通管理」里开通，或换一个已开通的模型。
+**Key 从哪读？** 优先级：插件配置里的 `apiKey` → 环境变量 `ARK_API_KEY`
 
-**报 401 / 403？**
+**为什么 `setx` 之后还是不行？**
 
-Key 不对。确认填的是 **Key 本身**（`ark-` 开头的一长串），而不是 Key 的**名字**。
+环境变量**只在进程启动时读取一次**。`setx` 只影响之后新启动的程序，
+所以**必须重启 Harness**。
 
-**图存到奇怪的地方了？**
+**怎么确认 Key 设对了？**
 
-检查 `outputDir` 配置。默认会存到**会话工作区**下的 `generated-images/日期/`。
+```powershell
+# Windows：查用户环境变量（不会显示完整值，只看长度）
+[Environment]::GetEnvironmentVariable("ARK_API_KEY","User").Length
+# 应该输出 46 左右
+```
 
-**生成很慢？**
+> ⚠️ **注意**：控制台里你给 Key 起的**名字**（比如 `ds-picture`）**不是 Key**。
+> 要的是创建时那串 `ark-` 开头的**值**。很多平台只在创建时显示一次，
+> 看不到就**重新创建一个**。
 
-正常。实测 2K 图约 **35 秒**，其中 **98% 是 API 生成时间**，下载和写盘只占 2%。
-想快就降分辨率（1K 大约快 3-4 倍）。
+**不想用环境变量？** 直接在插件配置里填：
+
+```yaml
+- id: ark-image
+  name: dsh-ark-image
+  config:
+    apiKey: 你的Key
+```
+
+（改完同样要重启 Harness）
 
 ---
 

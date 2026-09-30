@@ -330,15 +330,21 @@ function resolveOutputDir(outputDir, cwd, now = new Date()) {
 function describeHttpFailure(status, body, model) {
   const detail = body.slice(0, 600)
   if (status === 401 || status === 403) {
-    return `Ark rejected the API key (HTTP ${status}). Check that ARK_API_KEY holds the full key value, not the key's display name. Ark said: ${detail}`
+    return `Ark rejected the API key (HTTP ${status}). Check that ARK_API_KEY holds the full key VALUE, not the key's display name.\n`
+      + `火山方舟拒绝了 API Key（HTTP ${status}）。请确认填的是 Key 本身（ark- 开头的一长串），而不是你在控制台给它起的名字。\n`
+      + `Ark said / 服务端返回：${detail}`
   }
   if (status === 404) {
-    return `Ark does not recognise model "${model}" (HTTP 404). Open it in the Ark console first, or pass another \`model\`. Ark said: ${detail}`
+    return `Ark does not recognise model "${model}" (HTTP 404). Activate it in the Ark console first, or pass a different \`model\`.\n`
+      + `火山方舟不认识模型 "${model}"（HTTP 404）。请先在控制台「开通管理」里开通它，或换一个已开通的模型。\n`
+      + `Ark said / 服务端返回：${detail}`
   }
   if (status === 429) {
-    return `Ark rate limited the request (HTTP 429). Wait and retry, or lower the request rate. Ark said: ${detail}`
+    return `Ark rate limited the request (HTTP 429). Wait and retry, or lower the request rate.\n`
+      + `请求过于频繁（HTTP 429）。等一会儿再试，或降低调用频率。\n`
+      + `Ark said / 服务端返回：${detail}`
   }
-  return `Ark returned HTTP ${status}: ${detail}`
+  return `Ark returned HTTP ${status} / 火山方舟返回 HTTP ${status}：${detail}`
 }
 
 /**
@@ -465,21 +471,35 @@ export function apply(ctx, config) {
         const key = apiKey()
         if (key === undefined) {
           throw new Error(
-            'Ark API key is missing. Set ARK_API_KEY in the environment, or put `apiKey` in the ark-image row config.',
+            'Ark API key is missing. Set the ARK_API_KEY environment variable, or put `apiKey` in the ark-image row config.\n' +
+            '缺少火山方舟 API Key。请设置环境变量 ARK_API_KEY，或在 ark-image 这一行的 config 里填 `apiKey`。\n' +
+            '\n' +
+            'How to get one / 怎么获取：\n' +
+            '  1. https://console.volcengine.com/ark - sign up and complete real-name verification (注册并完成实名认证)\n' +
+            '  2. API Key management - create a key, copy the value starting with "ark-" (API Key 管理 - 创建并复制 ark- 开头的那串)\n' +
+            '  3. Activate the Doubao-Seedream model (在「开通管理」里开通 Doubao-Seedream 模型)\n' +
+            '  Windows: setx ARK_API_KEY "your-key"    then restart Harness (设完必须重启 Harness)\n' +
+            '\n' +
+            'Note: the key VALUE is what is needed, not the key NAME you gave it. (要的是 Key 本身，不是你给它起的名字。)',
           )
         }
 
         const prompt = String(args.prompt ?? '').trim()
-        if (prompt.length === 0) throw new Error('`prompt` must not be empty.')
+        if (prompt.length === 0) {
+          throw new Error('`prompt` must not be empty. / `prompt` 不能为空。')
+        }
 
         const model = typeof args.model === 'string' && args.model.length > 0 ? args.model : defaultModel
         const size = args.size === undefined ? '2K' : String(args.size).trim()
         if (!SIZE_PATTERN.test(size)) {
-          throw new Error(`Invalid size "${size}". Use a tier label (1K, 2K, 3K, 4K) or WxH such as 1024x1024.`)
+          throw new Error(
+            `Invalid size "${size}". Use a tier label (1K, 2K, 3K, 4K) or WxH such as 1024x1024.\n` +
+            `尺寸 "${size}" 无效。请用档位（1K / 2K / 3K / 4K），或具体尺寸如 1024x1024。`,
+          )
         }
         const count = args.n === undefined ? 1 : Number(args.n)
         if (!Number.isInteger(count) || count < 1 || count > 4) {
-          throw new Error('`n` must be an integer between 1 and 4.')
+          throw new Error('`n` must be an integer between 1 and 4. / `n` 必须是 1 到 4 之间的整数。')
         }
 
         const body = {
@@ -514,7 +534,7 @@ export function apply(ctx, config) {
           try {
             payload = JSON.parse(text)
           } catch {
-            throw new Error(`Ark returned a non-JSON body: ${text.slice(0, 300)}`)
+            throw new Error(`Ark returned a non-JSON body / 火山方舟返回了非 JSON 内容：${text.slice(0, 300)}`)
           }
         } finally {
           clearTimeout(timer)
@@ -523,7 +543,7 @@ export function apply(ctx, config) {
 
         const entries = Array.isArray(payload?.data) ? payload.data : []
         if (entries.length === 0) {
-          throw new Error(`Ark returned no image. Raw response: ${JSON.stringify(payload).slice(0, 600)}`)
+          throw new Error(`Ark returned no image / 火山方舟没有返回图片。Raw response / 原始响应：${JSON.stringify(payload).slice(0, 600)}`)
         }
 
         const generatedAt = new Date()
@@ -550,7 +570,7 @@ export function apply(ctx, config) {
           } else if (typeof entry?.url === 'string' && entry.url.length > 0) {
             const imageResponse = await fetch(entry.url, { signal: controller.signal })
             if (!imageResponse.ok) {
-              throw new Error(`Failed to download the generated image: HTTP ${imageResponse.status}`)
+              throw new Error(`Failed to download the generated image / 下载生成的图片失败：HTTP ${imageResponse.status}`)
             }
             reportedType = imageResponse.headers.get('content-type')
             bytes = new Uint8Array(await imageResponse.arrayBuffer())
@@ -583,7 +603,7 @@ export function apply(ctx, config) {
         }
 
         if (saved.length === 0) {
-          throw new Error('Ark reported images but none carried a `url` or `b64_json` field.')
+          throw new Error('Ark reported images but none carried a `url` or `b64_json` field. / 火山方舟报告有图片，但都没有 `url` 或 `b64_json` 字段。')
         }
 
         let usage
