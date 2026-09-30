@@ -6,44 +6,8 @@
 
 关键词 / Keywords：`dsh` `dsh-plugin` `deepseek-harness` `生图` `文生图` `图片生成` `AI 绘画` `火山方舟` `豆包` `Seedream` `Doubao` `Volcano Ark` `image-generation` `text-to-image`
 
----
-
-## 先说清楚：这个插件是给谁用的
-
-> **这不是 [`dsh-image-gen`](https://github.com/shanliuling/dsh-image-gen) 的替代品。**
-
-| 你想要的 | 该用哪个 |
-|---|---|
-| 图生图、图片编辑、AI 画布 | **[`dsh-image-gen`](https://github.com/shanliuling/dsh-image-gen)** —— 功能完整，8 个 Provider，有图库 |
-| 切换阿里云 / Gemini / OpenAI / Grok 等多个生图服务 | 同上 |
-| 本地 ComfyUI | 同上 |
-| **只想"说句话就出图"，然后忘掉这个插件的存在** | **这个** |
-
-**这个插件的取舍是刻意做窄的**：
-
-- ✅ **零运行时依赖** —— 没有依赖，就不会因为依赖出问题
-- ✅ **没有构建步骤** —— 不会出现"装完加载失败"（pnpm 默认拒绝执行插件的构建脚本，有 `prepare` 的包首次安装会失败，需要用户手动放行；本插件没有脚本可跑，所以不会）
-- ✅ **全部代码可通读** —— 一个文件，你可以自己看懂每一行
-- ❌ **只有 1 个 Provider**（火山方舟）
-- ❌ **只能文生图**，不能改图
-- ❌ **没有图库 / 画布 / 批量对比**
-
-**如果你的需求在上表"该用哪个"那一列命中前者，请直接用 `dsh-image-gen`——它做得比我好，这不是客套。**
-
----
-
-> ## ⚠️ 非官方项目 / Unofficial project
->
-> 本项目是**第三方社区插件**，由个人开发者独立编写与维护。
->
-> - **与 DeepSeek 无隶属、赞助或背书关系。** "DeepSeek"、"DeepSeek Harness" 等名称仅用于说明本插件所兼容的平台。
-> - **与火山引擎 / 火山方舟（Volcano Engine / Volcano Ark）无隶属、赞助或背书关系。** 插件通过其公开 API 调用图像生成能力，你需要自行注册账号并承担相应费用。
-> - 本插件按 MIT 许可证分发，**不提供任何担保**。使用前请自行评估。
->
-> **This is an unofficial community plugin, independently written and maintained.**
-> It is not affiliated with, endorsed by, or sponsored by DeepSeek or Volcano Engine.
-> Those names are used only to describe compatibility and the API this plugin calls.
-> Distributed under the MIT licence, with no warranty.
+> 非官方社区插件，与 DeepSeek、火山引擎无隶属关系。MIT 许可，无担保。
+> Unofficial community plugin, not affiliated with DeepSeek or Volcano Engine. MIT, no warranty.
 
 ---
 
@@ -64,11 +28,12 @@ D:\你的项目\generated-images\2026-09-30\a-vast-open-sea-085550.jpg
 > shows it inline in the conversation. A dependency-free DSH bundle backed by Volcano Ark;
 > you supply your own API key. Install with `dsh plugin --profile <name> add dsh-ark-image`.
 > The rest of this document is in Chinese.
+
+> **范围** — 一个工具，文生图。**不支持图生图或图片编辑**，也没有图库 / 画布。
+> 模型可通过配置项 `model` 更换，默认 `doubao-seedream-5-0-pro-260628`。
 >
-> **Scope** — Deliberately narrow: one provider, text-to-image only, zero dependencies,
-> no build step. It is *not* a replacement for
-> [`dsh-image-gen`](https://github.com/shanliuling/dsh-image-gen); if you need image
-> editing, a gallery, or multiple providers, use that instead.
+> **Scope** — One tool, text-to-image. No image-to-image, no editing, no gallery.
+> The model is configurable via `model`; the default is `doubao-seedream-5-0-pro-260628`.
 
 ---
 
